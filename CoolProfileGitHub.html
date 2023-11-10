@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Профили GitHub</title>
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.3/dist/vuetify.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.3/dist/vuetify.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <v-app :style="backImage">
+
+      <v-navigation-drawer app left absolute temporary v-model="drawer" :style="backImageMenu">
+        <v-list-item-group>
+          <div style="padding-top: 15px; padding-left: 15px; padding-bottom: 10px;">
+            <v-btn @click="drawer = !drawer">Назад</v-btn>
+          </div>
+          <v-list-item v-for="item in menu_items" :key="item.id">
+            <a :href="item.link" style="color:black; text-decoration:none; font-family: Constantia;">
+              <v-list-item-title style="font-size: 20px;">
+                {{ item.name }}
+              </v-list-item-title>
+            </a>
+          </v-list-item>
+        </v-list-item-group>
+      </v-navigation-drawer>
+
+      <v-app-bar app scroll-behavior="collapse" scroll-threshold="1000" :color="colorNav">
+        <button class="btn" @click="drawer = !drawer"><i class="fa fa-bars"></i></button>
+        <v-app-bar-title>
+          <h3 class="text-h4 white--text">Profiles GitHub</h3>
+        </v-app-bar-title>
+        <v-btn class="ml-auto" @click="changeTheme">Сменить тему</v-btn>
+      </v-app-bar>
+
+      <v-main>
+        <v-container style="margin-top: 10px;">
+          <v-row class="list__cafes-content">
+            <github-user-card v-for="username in usernames" :username="username"></github-user-card>
+          </v-row>
+        </v-container>
+      </v-main>
+
+      <div style="margin-top: 10px;">
+        <v-bottom-navigation grow :style="colorBot">
+          <v-btn style="font-size: 20px;">
+            <a href="https://github.com/Vladimir-Mardanshin" target="_blank"
+              style="text-decoration: none; color: white; font-family: Monotype Corsiva;">
+              Профиль Git
+            </a>
+          </v-btn>
+          <v-btn style="font-size: 20px;">
+            <a href="https://vk.com/vm_mardanshin" target="_blank"
+              style="text-decoration: none; color: white; font-family: Monotype Corsiva;">
+              Страница ВК
+            </a>
+          </v-btn>
+          <v-btn style="font-size: 20px;">
+            <a href="https://vuetifyjs.com/en/" target="_blank"
+              style="text-decoration: none; color: white; font-family: Monotype Corsiva;">
+              Документация
+            </a>
+          </v-btn>
+        </v-bottom-navigation>
+      </div>
+
+    </v-app>
+  </div>
+
+  <script type="text/x-template" id="github-user-card-template">
+    <v-col md="4">
+    <v-card>
+      <v-img height="250" :src="user.avatar_url"></v-img> 
+      <v-card-title> 
+        <a :href="`https://github.com/${username}`" class="header"><h3 class="text-h4">{{ user.name }}</h3></a>
+      </v-card-title>
+      <v-card-text>
+        <p class="text-body-1">{{ user.bio }}</p>
+      </v-card-text>
+    </v-card>
+  </v-col>
+  </script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        colorNav: "#20B2AA",
+        colorBot: "background-color: #20B2AA",
+        theme: false,
+        usernames: ['krahets', 'hootlex', 'akryum', '01-ai', 'ekzhang', 'openai'],
+        drawer: false,
+        lightTheme: "background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-03/1614559179_70-p-linii-na-belom-fone-95.png);",
+        backImageMenu: "background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-03/1614559179_70-p-linii-na-belom-fone-95.png);",
+        backImage: "background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-03/1614559179_70-p-linii-na-belom-fone-95.png);",
+        menu_items: [
+          { id: 0, name: 'Профиль GitHub', link: "https://github.com/Vladimir-Mardanshin" },
+          { id: 1, name: 'Документация Vue.js', link: "https://ru.vuejs.org/index.html" },
+          { id: 2, name: 'Обратная связь', link: "https://vk.com/vm_mardanshin" }
+        ]
+      },
+      methods: {
+        changeTheme() {
+          if (this.theme) {
+            this.colorNav = "#20B2AA";
+            this.colorBot = "background-color: #20B2AA",
+              this.backImage = this.lightTheme;
+            this.backImageMenu = this.lightTheme;
+            this.theme = false;
+          } else {
+            this.colorNav = "#696969";
+            this.colorBot = "background-color: #696969",
+              this.backImage = "background-image: url(https://catherineasquithgallery.com/uploads/posts/2023-01/1674255189_catherineasquithgallery-com-p-fon-linii-serii-foto-191.jpg);"
+            this.backImageMenu = "background-image: url(https://catherineasquithgallery.com/uploads/posts/2023-01/1674283139_catherineasquithgallery-com-p-fon-serii-dlya-listovki-foto-145.jpg);"
+            this.theme = true;
+          }
+        }
+      },
+      components: {
+        'github-user-card': {
+          template: '#github-user-card-template',
+          props: {
+            username: { type: String, required: true }
+          },
+          data() {
+            return {
+              user: {}
+            }
+          },
+          async created() {
+            const response = await axios.get(`https://api.github.com/users/${this.username}`)
+            this.user = response.data
+          }
+        }
+      }
+    })
+  </script>
+
+  <style>
+    .btn {
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</body>
+
+</html>
